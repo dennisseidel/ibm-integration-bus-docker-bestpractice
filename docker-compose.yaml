@@ -1,0 +1,16 @@
+version: '2'
+services:
+  mqclient:
+    image: ${REPO}mqclient:${MQ_VERSION}
+    build: ./mqclient-${MQ_VERSION}
+  iib:
+    image: ${REPO}iib-runtime:${IIB_VERSION}
+    build: ./iib-${IIB_VERSION}/
+  iib-mqclient:
+    image: ${REPO}iib-runtime:${IIB_VERSION}-mqclient
+    build: ./iib-${IIB_VERSION}-mqclient/
+    environment:
+      - LICENSE=accept
+      - IIBADMINPW=password
+      - IIBOBSERVERPW=password
+      - TRACEMODE=off
