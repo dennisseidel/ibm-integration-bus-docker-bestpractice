@@ -28,6 +28,10 @@ start()
   	echo "Sourcing profile"
   	source /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsiprofile
 	fi
+	if [[ "$GLOBALCACHE" = @(internal|external) ]]; then
+		echo "enable embedded global cache"
+		mqsichangebroker MYNODE -b default
+	fi
 	echo "Starting node MYNODE"
 	mqsistart MYNODE
 	echo "----------------------------------------"
@@ -36,9 +40,6 @@ start()
 config()
 {
 	echo "----------------------------------------"
-	#echo "Running - configuring Integration Node"
-	#echo "Create Integration Server default on MYNODE"
-  #mqsicreateexecutiongroup MYNODE -e default
   echo "Applying the iib admin inteface config"
   mqsichangefileauth MYNODE -r iibObserver -p read+
   mqsichangefileauth MYNODE -r iibAdmins -p all+
@@ -52,6 +53,17 @@ config()
   mqsireportfileauth MYNODE -l
   echo "Set trace nodes to:" $TRACEMODE
   /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsichangetrace MYNODE -n $TRACEMODE -e default
+
+	# configure a external global cache
+	if [ "$GLOBALCACHE" = external ]; then
+		echo "configure external globale cache from an IBM Extreme Scale"
+		mqsisetdbparms MYNODE  -n wxs::id1 -u $GC_USER -p $GC_PASSWD
+		mqsicreateconfigurableservice MYNODE -c WXSServer -o xc10 -n catalogServiceEndPoints,gridName,securityIdentity -v \"$GC_CATALOGENDPOINT\",$GC_GRIDNAME,id1
+		mqsichangeproperties MYNODE -o ComIbmJVMManager -e default -n jvmMaxHeapSize -v 1536870912
+		echo "restart IBM Integration Bus"
+		server/bin/mqsistop MYNODE
+		server/bin/mqsistart MYNODE
+	fi
 
   if [ -x /usr/local/bin/customconfig.sh ]; then
 		/usr/local/bin/customconfig.sh
