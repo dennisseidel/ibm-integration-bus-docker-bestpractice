@@ -43,7 +43,8 @@ config()
   echo "Applying the iib admin inteface config"
   mqsichangefileauth MYNODE -r iibObserver -p read+
   mqsichangefileauth MYNODE -r iibAdmins -p all+
-  echo "Create users"
+  echo "Create users with role admin and observer"
+	. /secret/pw.sh
   mqsiwebuseradmin MYNODE -c -u admin -a $IIBADMINPW -r iibAdmins
   mqsiwebuseradmin MYNODE -c -u observer -a $IIBOBSERVERPW -r iibObserver
   echo "give user permission on the integration server"
