@@ -30,14 +30,15 @@ You can add more runtime images and if you have a configuration that should away
 - Environment variables:
     - IIB_TRACEMODE: this can be set `on` or `off` and en/disables trace nodes.
     - IIB_LICENSE: this must be set to `accept` indicated that you accepted the IBM License Agreement
+    - IIB_SKIPDEPLOY: Skip deployment of IIB applications, useful in development
     - IIB_GLOBALCACHE: if set to `internal` the global cache on IIB is just enabled. If set to `external` the connection to an external IBM Extreme Scale is configured this requires the following environment variables to be set:
-      - IIB_GC_USER: username to connect to IBM Extreme Scale
-      - IIB_GC_PASSWD: password to connect to IBM Extreme Scale
-      - IIB_GC_CATALOGENDPOINT: catalogendpoint to connect to IBM Extreme Scale
-      - IIB_GC_GRIDNAME gridname to connect to IBM Extreme Scale
+    - IIB_GC_USER: username to connect to IBM Extreme Scale
+    - IIB_GC_PASSWD: password to connect to IBM Extreme Scale
+    - IIB_GC_CATALOGENDPOINT: catalogendpoint to connect to IBM Extreme Scale
+    - IIB_GC_GRIDNAME gridname to connect to IBM Extreme Scale
 - Exposed Ports:
- 	- 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
-	- 7800: Port of the HTTP Listener
+    - 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
+    - 7800: Port of the HTTP Listener
 
 ## Usage Process
 If you have the need for a new image or want to modify one of the existing runtime images:

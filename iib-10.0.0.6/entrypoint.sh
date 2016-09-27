@@ -113,7 +113,7 @@ iib-license-check.sh
 start
 config
 
-if [[ "${SKIPDEPLOY}" != 'true' ]]; then
+if [[ "${IIB_SKIPDEPLOY}" != 'true' ]]; then
     deploy
 fi
 
