@@ -102,6 +102,10 @@ deploy()
 iib-license-check.sh
 start
 config
-deploy
+
+if [[ "${SKIPDEPLOY}" != 'true' ]]; then
+    deploy
+fi
+
 trap stop SIGTERM SIGINT
 tail -f /var/log/syslog
