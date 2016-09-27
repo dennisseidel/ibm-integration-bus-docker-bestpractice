@@ -7,11 +7,37 @@ The Framework exists of two Layers:
   - [AppLayer](https://github.com/dennisseidel/iib-bestpractice-applications-template): This repository include a template for a developer to develop his own immutable image for his applications.
 
 This repository include the source code for the following RuntimeLayer Images from which the developer can select as the foundation for his AppLayer image:
-    - `./mqclient-9.0.0/`: This build a image that contains an Ubuntu 14.04 and an mqclient with MQ Version 9.0.0.
-    - `./iib-10.0.0.6-mqclient/`: This builds a image that bases on the image `mqclient-9.0.0` with an IIB in Version `10.0.0.6`.
-    - `./iib-10.0.0.6/`: This builds Ubuntu 14.04 image with an IIB in Version `10.0.0.6`.
+- `./mqclient-9.0.0/`: This build a image that contains an Ubuntu 14.04 and an mqclient with MQ Version 9.0.0.
+- `./iib-10.0.0.6-mqclient/`: This builds a image that bases on the image `mqclient-9.0.0` with an IIB in Version `10.0.0.6`.
+- `./iib-10.0.0.6/`: This builds Ubuntu 14.04 image with an IIB in Version `10.0.0.6`.
 
 You can add more runtime images and if you have a configuration that should aways be don't then this can be added to these Images with the RuntimeLayer.
+
+## Image Parameters:
+
+### iib-10.0.0.6-mqclient / iib-10.0.0.6
+
+- Standardconfig of IIB:
+  - nodename: MYNODE
+  - integrationservername: default
+  - two user for the webadminui also to be used when connection from IIB Toolkit to the Integrationnode:
+    - admin:
+      - can read, write, execute
+      - password must be set through the pw.sh with the defintion of IIBADMINPW variable
+    - observer:
+      - can read only
+      - password must be set through the pw.sh with the defintion of IIBOBSERVERPW variable
+- Environment variables:
+    - TRACEMODE: this can be set `on` or `off` and en/disables trace nodes.
+    - LICENSE: this must be set to `accept` indicated that you accepted the IBM License Agreement
+    - GLOBALCACHE: if set to `internal` the global cache on IIB is just enabled. If set to `external` the connection to an external IBM Extreme Scale is configured this requires the following environment variables to be set:
+      - GC_USER: username to connect to IBM Extreme Scale
+      - GC_PASSWD: password to connect to IBM Extreme Scale
+      - GC_CATALOGENDPOINT: catalogendpoint to connect to IBM Extreme Scale
+      - GC_GRIDNAME gridname to connect to IBM Extreme Scale
+- Exposed Ports:
+ 	- 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
+	- 7800: Port of the HTTP Listener
 
 ## Usage Process
 If you have the need for a new image or want to modify one of the existing runtime images:
