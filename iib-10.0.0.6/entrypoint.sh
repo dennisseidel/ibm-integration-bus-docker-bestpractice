@@ -28,7 +28,7 @@ start()
     echo "Sourcing profile"
     source /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsiprofile
   fi
-  if [[ "$GLOBALCACHE" = @(internal|external) ]]; then
+  if [[ "$IIB_GLOBALCACHE" = @(internal|external) ]]; then
     echo "enable embedded global cache"
     mqsichangebroker MYNODE -b default
   fi
@@ -61,16 +61,16 @@ config()
   mqsichangefileauth MYNODE -r iibAdmins -p all+ -e default
   echo "Check file auth"
   mqsireportfileauth MYNODE -l
-  
+
   IIB_TRACEMODE="${IIB_TRACEMODE:-off}"
   echo "Set trace nodes to:" $IIB_TRACEMODE
   /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsichangetrace MYNODE -n $IIB_TRACEMODE -e default
 
   # configure a external global cache
-  if [ "$GLOBALCACHE" = external ]; then
+  if [ "$IIB_GLOBALCACHE" = external ]; then
     echo "configure external globale cache from an IBM Extreme Scale"
-    mqsisetdbparms MYNODE  -n wxs::id1 -u $GC_USER -p $GC_PASSWD
-    mqsicreateconfigurableservice MYNODE -c WXSServer -o xc10 -n catalogServiceEndPoints,gridName,securityIdentity -v \"$GC_CATALOGENDPOINT\",$GC_GRIDNAME,id1
+    mqsisetdbparms MYNODE  -n wxs::id1 -u $IIB_GC_USER -p $IIB_GC_PASSWD
+    mqsicreateconfigurableservice MYNODE -c WXSServer -o xc10 -n catalogServiceEndPoints,gridName,securityIdentity -v \"$IIB_GC_CATALOGENDPOINT\",$IIB_GC_GRIDNAME,id1
     mqsichangeproperties MYNODE -o ComIbmJVMManager -e default -n jvmMaxHeapSize -v 1536870912
     echo "restart IBM Integration Bus"
     server/bin/mqsistop MYNODE
