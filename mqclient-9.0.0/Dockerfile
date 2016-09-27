@@ -19,12 +19,6 @@ RUN echo "mq:8.0" > /etc/debian_chroot
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# The URL to download the MQ installer from in tar.gz format
-ENV MQ_URL=http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev80_linux_x86-64.tar.gz
-
-# The MQ packages to install
-ENV MQ_PACKAGES="MQSeriesRuntime-*.rpm MQSeriesClient-*.rpm"
-
 # Install additional packages required by this install process and the runtime scripts
 RUN apt-get update \
     && apt-get install -y \
@@ -33,8 +27,14 @@ RUN apt-get update \
     curl \
     rpm \
     tar \
-    && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# The URL to download the MQ installer from in tar.gz format
+ENV MQ_URL=http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev80_linux_x86-64.tar.gz
+
+# The MQ packages to install
+ENV MQ_PACKAGES="MQSeriesRuntime-*.rpm MQSeriesClient-*.rpm"
 
 # Download and extract the MQ installation files
 RUN mkdir -p /tmp/mq \
@@ -53,3 +53,4 @@ RUN mkdir -p /tmp/mq \
 
 # Always use port 1414 (the Docker administrator can re-map ports at runtime)
 EXPOSE 1414
+
