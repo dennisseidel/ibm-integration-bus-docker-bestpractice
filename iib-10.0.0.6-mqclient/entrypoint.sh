@@ -61,8 +61,10 @@ config()
   mqsichangefileauth MYNODE -r iibAdmins -p all+ -e default
   echo "Check file auth"
   mqsireportfileauth MYNODE -l
-  echo "Set trace nodes to:" $TRACEMODE
-  /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsichangetrace MYNODE -n $TRACEMODE -e default
+  
+  IIB_TRACEMODE="${IIB_TRACEMODE:-off}"
+  echo "Set trace nodes to:" $IIB_TRACEMODE
+  /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsichangetrace MYNODE -n $IIB_TRACEMODE -e default
 
   # configure a external global cache
   if [ "$GLOBALCACHE" = external ]; then
