@@ -44,9 +44,18 @@ config()
   mqsichangefileauth MYNODE -r iibObserver -p read+
   mqsichangefileauth MYNODE -r iibAdmins -p all+
   echo "Create users with role admin and observer"
-  . /secret/pw.sh
-  mqsiwebuseradmin MYNODE -c -u admin -a $IIBADMINPW -r iibAdmins
-  mqsiwebuseradmin MYNODE -c -u observer -a $IIBOBSERVERPW -r iibObserver
+
+  if [[ -f /secret/pw.sh ]]; then
+    echo "Using mounted Kubernetes secret..."
+    . /secret/pw.sh
+  else
+    echo "WARNING: Using password environment variables, this is insecure"
+    IIB_ADMINPW="${IIB_ADMINPW:-admin}"
+    IIB_OBSERVERPW="${IIB_OBSERVERPW:-observer}"
+  fi
+
+  mqsiwebuseradmin MYNODE -c -u admin -a $IIB_ADMINPW -r iibAdmins
+  mqsiwebuseradmin MYNODE -c -u observer -a $IIB_OBSERVERPW -r iibObserver
   echo "give user permission on the integration server"
   mqsichangefileauth MYNODE -r iibObserver -p read+ -e default
   mqsichangefileauth MYNODE -r iibAdmins -p all+ -e default
