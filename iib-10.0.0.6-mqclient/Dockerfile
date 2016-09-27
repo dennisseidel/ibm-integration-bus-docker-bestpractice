@@ -27,7 +27,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # The URL to download the MQ installer from in tar.gz format
-ENV MQ_URL=http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev80_linux_x86-64.tar.gz
+ENV MQ_URL=http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev90_linux_x86-64.tar.gz
 
 # The MQ packages to install
 ENV MQ_PACKAGES="MQSeriesRuntime-*.rpm MQSeriesClient-*.rpm"
