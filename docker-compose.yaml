@@ -10,7 +10,7 @@ services:
     image: ${REPO}iib-runtime:${IIB_VERSION}-mqclient
     build: ./iib-${IIB_VERSION}-mqclient/
     environment:
-      - LICENSE=accept
-      - IIBADMINPW=password
-      - IIBOBSERVERPW=password
-      - TRACEMODE=off
+      - IIB_LICENSE=accept
+      - IIB_ADMINPW=password
+      - IIB_OBSERVERPW=password
+      - IIB_TRACEMODE=off
