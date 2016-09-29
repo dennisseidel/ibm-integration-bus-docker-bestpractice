@@ -10,54 +10,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mqclient:9.0.0
+FROM iib:10.0.0.6
 
-MAINTAINER Dennis Seidel mail@dennisseidel.de
+MAINTAINER Dennis Seidel <mail@dennisseidel.de>
 
-ENV IIB_VERSION="10.0.0.6"
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Configure system
-RUN echo "IIB_${IIB_VERSION}:" > /etc/debian_chroot  && \
-    touch /var/log/syslog && \
-    chown syslog:adm /var/log/syslog
-
-# Install rsyslog less
-RUN set -ex \
-    && apt-get update -y \
-    && apt-get install -y rsyslog less \
+# Install additional packages required by this install process and the runtime scripts
+RUN apt-get update \
+    && apt-get install -y \
+    bash \
+    bc \
+    rpm \
+    tar \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Add IIB Binaries to image and create user
-RUN set -ex \
-    && mkdir /opt/ibm \
-    && curl http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/integration/${IIB_VERSION}-IIB-LINUX64-DEVELOPER.tar.gz \
-    | tar zx --exclude iib-${IIB_VERSION}/tools --directory /opt/ibm \
-    && /opt/ibm/iib-${IIB_VERSION}/iib make registry global accept license silently \
-    && useradd --create-home --home-dir /home/iibuser -G mqbrkrs iibuser \
-    && chgrp -R mqbrkrs /opt/ibm && chmod 770 /opt/ibm # wirklich notwendig? security!
+# The URL to download the MQ installer from in tar.gz format
+ENV MQ_URL=http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev90_linux_x86-64.tar.gz
 
-# Create IIB Runtime
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-RUN set -ex \
-    && source /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsiprofile \
-    && /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsicreatebroker MYNODE -o advanced \
-    && mqsilist -d0 \
-    && echo "enable file based authentication" \
-    && mqsichangeauthmode MYNODE -s active -m file \
-    && mqsistart MYNODE \
-    && mqsicreateexecutiongroup MYNODE -e default
+# The MQ packages to install
+ENV MQ_PACKAGES="MQSeriesRuntime-*.rpm MQSeriesClient-*.rpm"
 
-# Copy in script files
-COPY iib-license-check.sh /usr/local/bin/
-COPY iib_env.sh /usr/local/bin/
-COPY entrypoint.sh /usr/local/bin/
+# Download and extract the MQ installation files
+RUN mkdir -p /tmp/mq \
+    && cd /tmp/mq \
+    && curl -LO ${MQ_URL} \
+    && tar -zxvf ./*.tar.gz \
+    && cd /tmp/mq/MQServer \
+    # Accept the MQ license
+    && ./mqlicense.sh -text_only -accept \
+    # Install MQ using the RPM packages
+    && rpm -ivh --force-debian ${MQ_PACKAGES} \
+    # Recommended: Set the default MQ installation (makes the MQ commands available on the PATH)
+    && /opt/mqm/bin/setmqinst -p /opt/mqm -i \
+    # Clean up all the downloaded files
+    && rm -rf /tmp/mq
 
-# Set BASH_ENV to source mqsiprofile when using docker exec bash -c
-ENV BASH_ENV=/usr/local/bin/iib_env.sh
-
-# Expose default admin port and http port
-EXPOSE 4414 7800
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# Always use port 1414 (the Docker administrator can re-map ports at runtime)
+EXPOSE 1414
 

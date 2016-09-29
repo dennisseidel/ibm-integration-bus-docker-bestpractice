@@ -6,9 +6,9 @@
 # which accompanies this distribution, and is available at
 # http://www.eclipse.org/legal/epl-v10.html
 
-if [ "$LICENSE" = "accept" ]; then
+if [ "$IIB_LICENSE" = "accept" ]; then
 	exit 0
-elif [ "$LICENSE" = "view" ]; then
+elif [ "$IIB_LICENSE" = "view" ]; then
 	case "$LANG" in
 		zh_TW*) LICENSE_FILE=Chinese_TW.txt ;;
 		zh*) LICENSE_FILE=Chinese.txt ;;
@@ -33,6 +33,6 @@ elif [ "$LICENSE" = "view" ]; then
 	cat /opt/ibm/iib-10.0.0.6/license/$LICENSE_FILE
 	exit 1
 else
-	echo -e "Set environment variable LICENSE=accept to indicate acceptance of license terms and conditions.\n\nLicense agreements and information can be viewed by running this image with the environment variable LICENSE=view.  You can also set the LANG environment variable to view the license in a different language."
+	echo -e "Set environment variable IIB_LICENSE=accept to indicate acceptance of license terms and conditions.\n\nLicense agreements and information can be viewed by running this image with the environment variable IIB_LICENSE=view.  You can also set the LANG environment variable to view the license in a different language."
 	exit 1
 fi
