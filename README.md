@@ -41,6 +41,7 @@ You can add more runtime images and if you have a configuration that should away
 
 ## Usage Process
 If you have the need for a new image or want to modify one of the existing runtime images:
+
 1. Update or add a Version Number in the `env` file and run it `. ./env`
 2. Create a new folder with a new definition of a runtime layer image.
 3. Add the image to the `docker-compose` file according to the other images.
