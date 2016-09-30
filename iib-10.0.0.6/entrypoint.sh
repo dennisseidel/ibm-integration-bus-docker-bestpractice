@@ -32,6 +32,17 @@ start()
     echo "enable embedded global cache"
     mqsichangebroker MYNODE -b default
   fi
+
+	if [[ -f /secret/pw.sh ]]; then
+    echo "Using mounted Kubernetes secret..."
+    . /secret/pw.sh
+  fi
+	#config keystore and keystore pw
+	if [[ ! -z "$IIB_KEYSTOREPW" ]] || [[ ! -z "$IIB_TRUSTSTOREPW" ]]; then
+		mqsisetdbparms MYNODE -n brokerKeystore::password -u ignore -p $IIB_KEYSTOREPW
+		mqsisetdbparms MYNODE -n brokerTruststore::password -u ignore -p $IIB_TRUSTSTOREPW
+	fi
+
   echo "Starting node MYNODE"
   mqsistart MYNODE
   echo "----------------------------------------"
@@ -62,7 +73,10 @@ config()
   echo "Check file auth"
   mqsireportfileauth MYNODE -l
 
-  IIB_TRACEMODE="${IIB_TRACEMODE:-off}"
+	echo "Check the HTTPS Connector"
+	mqsireportproperties MYNODE -e default -o HTTPSConnector  -r
+
+	IIB_TRACEMODE="${IIB_TRACEMODE:-off}"
   echo "Set trace nodes to:" $IIB_TRACEMODE
   /opt/ibm/iib-${IIB_VERSION}/server/bin/mqsichangetrace MYNODE -n $IIB_TRACEMODE -e default
 
@@ -76,6 +90,14 @@ config()
     server/bin/mqsistop MYNODE
     server/bin/mqsistart MYNODE
   fi
+
+	# add keystore config
+	if [[ -f /secret/keystore.jks ]] && [[ -f /secret/truststore.jks ]]; then
+		echo "configure keystore and truststore if exists"
+		mqsichangeproperties MYNODE -o BrokerRegistry -n brokerKeystoreFile -v /secret/keystore.jks
+		mqsichangeproperties MYNODE -o BrokerRegistry -n brokerTruststoreFile -v /secret/truststore.jks
+	fi
+
 
   if [ -x /usr/local/bin/customconfig.sh ]; then
     /usr/local/bin/customconfig.sh

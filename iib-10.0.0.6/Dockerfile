@@ -46,7 +46,12 @@ RUN set -ex \
     && echo "enable file based authentication" \
     && mqsichangeauthmode MYNODE -s active -m file \
     && mqsistart MYNODE \
-    && mqsicreateexecutiongroup MYNODE -e default
+    && mqsicreateexecutiongroup MYNODE -e default \
+		# enable HTTPS Port
+		&& mqsichangeproperties MYNODE -e default -o HTTPSConnector -n explicitlySetPortNumber -v 7843 \
+		# enable SSL mutural client auth
+		&& mqsichangeproperties MYNODE -e default -o HTTPSConnector -n clientAuth -v true
+
 
 # Copy in script files
 COPY iib-license-check.sh /usr/local/bin/
@@ -60,4 +65,3 @@ ENV BASH_ENV=/usr/local/bin/iib_env.sh
 EXPOSE 4414 7800
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-

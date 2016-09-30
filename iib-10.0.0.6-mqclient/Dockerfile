@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM iib:10.0.0.6
+FROM iib-runtime:10.0.0.6
 
 MAINTAINER Dennis Seidel <mail@dennisseidel.de>
 
@@ -49,4 +49,3 @@ RUN mkdir -p /tmp/mq \
 
 # Always use port 1414 (the Docker administrator can re-map ports at runtime)
 EXPOSE 1414
-

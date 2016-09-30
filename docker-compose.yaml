@@ -1,11 +1,20 @@
 version: '2'
 services:
-  mqclient:
-    image: ${REPO}mqclient:${MQ_VERSION}
-    build: ./mqclient-${MQ_VERSION}
   iib:
     image: ${REPO}iib-runtime:${IIB_VERSION}
     build: ./iib-${IIB_VERSION}/
+    environment:
+      - IIB_LICENSE=accept
+      - IIB_ADMINPW=password
+      - IIB_OBSERVERPW=password
+      - IIB_TRACEMODE=off
+      - IIB_SKIPDEPLOY=true
+      - IIB_KEYSTOREPW=changeit
+      - IIB_TRUSTSTOREPW=changeit
+    ports:
+      - "4414:4414"
+      - "7800:7800"
+      - "7843:7843"
   iib-mqclient:
     image: ${REPO}iib-runtime:${IIB_VERSION}-mqclient
     build: ./iib-${IIB_VERSION}-mqclient/
@@ -14,3 +23,8 @@ services:
       - IIB_ADMINPW=password
       - IIB_OBSERVERPW=password
       - IIB_TRACEMODE=off
+      - IIB_SKIPDEPLOY=true
+    ports:
+      - "4414:4414"
+      - "7800:7800"
+      - "7843:7843"
