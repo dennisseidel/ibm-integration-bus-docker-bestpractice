@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM iib-runtime:10.0.0.6
+FROM dennisseidel/iib-bestpractice-runtimes:10.0.0.6
 
 MAINTAINER Dennis Seidel <mail@dennisseidel.de>
 
