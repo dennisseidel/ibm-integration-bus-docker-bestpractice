@@ -33,6 +33,10 @@ This repository includes the source code for the following RuntimeLayer images f
       - IIB_GC_PASSWD: password to connect to IBM Extreme Scale
       - IIB_GC_CATALOGENDPOINT: catalogendpoint to connect to IBM Extreme Scale
       - IIB_GC_GRIDNAME gridname to connect to IBM Extreme Scale
+		The PKI Infrastructure can be configured as follows by setting the following env variables the iib configuration will be done by the base image automatically if both variables are available and the keystore:
+			- `IIB_KEYSTOREPW`: the keystore password, can be set as an environment variable or in the `pw.sh` file mounted under `/secret/pw.sh`.
+			- `IIB_TRUSTSTOREPW`: the truststore password, can be set as an environment variable or in the `pw.sh` file mounted under `/secret/pw.sh`.
+			- Add a keystore and truststore under `/secret/keystore.jks` and `/secret/truststore.jks` to enable HTTPS or SSL MQ.
 - Exposed Ports:
     - 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
     - 7800: Port of the HTTP Listener
