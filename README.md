@@ -10,6 +10,9 @@ This repository includes the source code for the following RuntimeLayer images f
 - `iib-10.0.0.6`: Creates an Ubuntu 14.04 image with IIB in version `10.0.0.6`
 - `iib-10.0.0.6-mqclient`: Adds MQClient 9 to the `iib-10.0.0.6` image
 
+### Build Status
+[![](https://images.microbadger.com/badges/image/dennisseidel/iib-bestpractice-runtimes.svg)](https://microbadger.com/images/dennisseidel/iib-bestpractice-runtimes "Get your own image badge on microbadger.com")
+
 ## Image Parameters:
 
 ### iib-10.0.0.6-mqclient / iib-10.0.0.6
