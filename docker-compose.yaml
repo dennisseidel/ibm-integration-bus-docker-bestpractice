@@ -1,7 +1,7 @@
 version: '2'
 services:
   iib:
-    image: ${REPO}iib-runtime:${IIB_VERSION}
+    image: ${REPO}iib-bestpractice-runtimes:${IIB_VERSION}
     build: ./iib-${IIB_VERSION}/
     environment:
       - IIB_LICENSE=accept
@@ -14,9 +14,9 @@ services:
     ports:
       - "4414:4414"
       - "7800:7800"
-      - "7843:7843"
+      - "7843:7843"  
   iib-mqclient:
-    image: ${REPO}iib-runtime:${IIB_VERSION}-mqclient
+    image: ${REPO}iib-bestpractice-runtimes:${IIB_VERSION}-mqclient
     build: ./iib-${IIB_VERSION}-mqclient/
     environment:
       - IIB_LICENSE=accept

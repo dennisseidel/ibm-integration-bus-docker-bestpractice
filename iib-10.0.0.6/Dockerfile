@@ -61,6 +61,9 @@ COPY entrypoint.sh /usr/local/bin/
 # Set BASH_ENV to source mqsiprofile when using docker exec bash -c
 ENV BASH_ENV=/usr/local/bin/iib_env.sh
 
+# Create default properties folder
+RUN mkdir /iibProperties/
+
 # Expose default admin port and http port
 EXPOSE 4414 7800
 

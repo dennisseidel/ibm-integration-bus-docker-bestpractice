@@ -107,6 +107,10 @@ config()
     /usr/local/bin/customconfig.sh
   fi
 
+	# create file to indicate that container is allready configure this is used
+	# after restart to skip config if this file exists
+	touch /iib-configured
+
 }
 
 deploy()
@@ -119,7 +123,7 @@ deploy()
   for f in $FILES; do
     filename=$(basename "$f")
     filenamewithoutextension=$(basename "$f" | cut -d. -f1)
-    ls -ll /iibProperties/
+    #ls -ll /iibProperties/
     if [ ! -f /iibDeployed/$filename ]; then
       if [ -f /iibProperties/$filenamewithoutextension.properties ]; then
         echo "... configure $f  with properties file ..."
@@ -137,7 +141,11 @@ deploy()
 
 iib-license-check.sh
 start
-config
+
+# configure iib if not allready done
+if [[ ! -f /iib-configured ]]; then
+	config
+fi
 
 if [[ "${IIB_SKIPDEPLOY}" != 'true' ]]; then
     deploy
