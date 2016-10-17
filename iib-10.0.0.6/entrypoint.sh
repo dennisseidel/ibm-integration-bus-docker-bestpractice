@@ -60,22 +60,20 @@ config()
     IIB_OBSERVERPW="${IIB_OBSERVERPW:-observer}"
   fi
 
-	if [[ $(mqsireportfileauth MYNODE -l | wc -c) -ne 0 ]]; then
-    echo "the accounts have already been created"
-	else
-		mqsiwebuseradmin MYNODE -c -u admin -a $IIB_ADMINPW -r iibAdmins
-		mqsiwebuseradmin MYNODE -c -u observer -a $IIB_OBSERVERPW -r iibObserver
-		echo "give user permission on the integration server"
-		mqsichangefileauth MYNODE -r iibObserver -p read+ -e default
-		mqsichangefileauth MYNODE -r iibAdmins -p all+ -e default
-	fi
-  echo "Check file auth"
-  mqsireportfileauth MYNODE -l
+	echo "Create users with role admin and observer"
+	mqsiwebuseradmin MYNODE -c -u admin -a $IIB_ADMINPW -r iibAdmins
+	mqsiwebuseradmin MYNODE -c -u observer -a $IIB_OBSERVERPW -r iibObserver
 
 	echo "Applying the iib admin inteface config"
   mqsichangefileauth MYNODE -r iibObserver -p read+
   mqsichangefileauth MYNODE -r iibAdmins -p all+
-  echo "Create users with role admin and observer"
+
+	echo "give user permission on the integration server"
+	mqsichangefileauth MYNODE -r iibObserver -p read+ -e default
+	mqsichangefileauth MYNODE -r iibAdmins -p all+ -e default
+
+  echo "Check file auth"
+  mqsireportfileauth MYNODE -l
 
 	echo "Check the HTTPS Connector"
 	mqsireportproperties MYNODE -e default -o HTTPSConnector  -r
