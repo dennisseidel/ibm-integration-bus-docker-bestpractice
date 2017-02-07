@@ -14,7 +14,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Dennis Seidel mail@dennisseidel.de
 
-ENV IIB_VERSION="10.0.0.6"
+ENV IIB_VERSION="10.0.0.7"
 
 # Configure system
 RUN echo "IIB_${IIB_VERSION}:" > /etc/debian_chroot  && \
@@ -57,6 +57,10 @@ RUN set -ex \
 COPY iib-license-check.sh /usr/local/bin/
 COPY iib_env.sh /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
+
+# Copy libs
+RUN mkdir /customlibs/
+COPY /lib /customlibs
 
 # Set BASH_ENV to source mqsiprofile when using docker exec bash -c
 ENV BASH_ENV=/usr/local/bin/iib_env.sh

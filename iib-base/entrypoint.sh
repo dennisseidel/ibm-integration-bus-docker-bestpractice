@@ -89,8 +89,7 @@ config()
     mqsicreateconfigurableservice MYNODE -c WXSServer -o xc10 -n catalogServiceEndPoints,gridName,securityIdentity -v \"$IIB_GC_CATALOGENDPOINT\",$IIB_GC_GRIDNAME,id1
     mqsichangeproperties MYNODE -o ComIbmJVMManager -e default -n jvmMaxHeapSize -v 1536870912
     echo "restart IBM Integration Bus"
-    server/bin/mqsistop MYNODE
-    server/bin/mqsistart MYNODE
+    touch /iib-restart
   fi
 
 	# add keystore config
@@ -105,7 +104,18 @@ config()
     /usr/local/bin/customconfig.sh
   fi
 
-	# create file to indicate that container is allready configure this is used
+  if [ -x /var/mqsi/odbc.ini ]; then
+    touch /iib-restart
+  fi
+
+	if [ -x /iib-restart ]; then
+    echo "restart IBM Integration Bus"
+    server/bin/mqsistop MYNODE
+    server/bin/mqsistart MYNODE
+    rm -rf /iib-restart 
+  fi
+
+  # create file to indicate that container is allready configure this is used
 	# after restart to skip config if this file exists
 	touch /iib-configured
 
