@@ -2,7 +2,7 @@ version: '2'
 services:
   iib:
     image: ${REPO}iib-bestpractice-runtimes:${IIB_VERSION}
-    build: ./iib-${IIB_VERSION}/
+    build: ./iib-base/
     environment:
       - IIB_LICENSE=accept
       - IIB_ADMINPW=password
@@ -17,7 +17,7 @@ services:
       - "7843:7843"  
   iib-mqclient:
     image: ${REPO}iib-bestpractice-runtimes:${IIB_VERSION}-mqclient
-    build: ./iib-${IIB_VERSION}-mqclient/
+    build: ./iib-mqclient/
     environment:
       - IIB_LICENSE=accept
       - IIB_ADMINPW=password
