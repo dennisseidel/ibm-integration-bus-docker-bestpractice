@@ -99,15 +99,23 @@ config()
 		mqsichangeproperties MYNODE -o BrokerRegistry -n brokerTruststoreFile -v /secret/truststore.jks
 	fi
 
-
+  # entry hook for custome config commands in a file mounted/copy by the user into /usr/local/bin/customconfig.sh
   if [ -x /usr/local/bin/customconfig.sh ]; then
     /usr/local/bin/customconfig.sh
   fi
 
+  # check if odbc.ini available and then setup a restart at the end of the config step
   if [ -f /var/mqsi/odbc.ini ]; then
     touch /iib-restart
   fi
 
+  #check if a debug port is set in env variable IIB_DEBUGPORT if yes configure it and setup for restart
+  if [[ $IIB_DEBUGPORT == ?(-)+([0-9]) ]]; then
+     mqsichangeproperties MYNODE -e default -o ComIbmJVMManager -n jvmDebugPort -v $IIB_DEBUGPORT
+     touch /iib-restart
+  fi
+
+  # check if a restart is needed
 	if [ -f /iib-restart ]; then
     echo "restart IBM Integration Bus"
     mqsistop MYNODE
