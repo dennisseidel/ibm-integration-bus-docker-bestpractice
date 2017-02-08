@@ -30,7 +30,7 @@ elif [ "$IIB_LICENSE" = "view" ]; then
 		tr*) LICENSE_FILE=Turkish.txt ;;
 		*) LICENSE_FILE=English.txt ;;
 	esac
-	cat /opt/ibm/iib-10.0.0.6/license/$LICENSE_FILE
+	cat /opt/ibm/iib-10.0.0.7/license/$LICENSE_FILE
 	exit 1
 else
 	echo -e "Set environment variable IIB_LICENSE=accept to indicate acceptance of license terms and conditions.\n\nLicense agreements and information can be viewed by running this image with the environment variable IIB_LICENSE=view.  You can also set the LANG environment variable to view the license in a different language."
