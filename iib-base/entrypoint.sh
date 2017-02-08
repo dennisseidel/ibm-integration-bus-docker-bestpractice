@@ -104,14 +104,14 @@ config()
     /usr/local/bin/customconfig.sh
   fi
 
-  if [ -x /var/mqsi/odbc.ini ]; then
+  if [ -f /var/mqsi/odbc.ini ]; then
     touch /iib-restart
   fi
 
-	if [ -x /iib-restart ]; then
+	if [ -f /iib-restart ]; then
     echo "restart IBM Integration Bus"
-    server/bin/mqsistop MYNODE
-    server/bin/mqsistart MYNODE
+    mqsistop MYNODE
+    mqsistart MYNODE
     rm -rf /iib-restart 
   fi
 
