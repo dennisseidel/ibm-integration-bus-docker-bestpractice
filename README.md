@@ -7,12 +7,12 @@ The framework consists of two Layers:
   - [AppLayer](https://github.com/dennisseidel/iib-bestpractice-applications-template): This repository include a template for a developer to develop his own immutable image for his applications.
 
 This repository includes the source code for the following RuntimeLayer images from which the developer can select as the foundation for his AppLayer image:
-- `iib-10.0.0.6`: Creates an Ubuntu 14.04 image with IIB in version `10.0.0.6`  
-- `iib-10.0.0.6-mqclient`: Adds MQClient 9 to the `iib-10.0.0.6` image
+- `iib-10.0.0.7`: Creates an Ubuntu 14.04 image with IIB in version `10.0.0.7`  
+- `iib-10.0.0.7-mqclient`: Adds MQClient 9 to the `iib-10.0.0.7` image
 
 ## Image Parameters:
 
-### iib-10.0.0.6-mqclient / iib-10.0.0.6
+### iib-10.0.0.7-mqclient / iib-10.0.0.7
 
 - Default config of IIB:
   - nodename: MYNODE
@@ -26,6 +26,7 @@ This repository includes the source code for the following RuntimeLayer images f
       - password must be set by definining it in the IIB_OBSERVERPW variable
 - Environment variables:
     - IIB_TRACEMODE: this can be set to `on` or `off` to en/disable trace nodes.
+    - IIB_DEBUGPORT: this can be set to any port e.g. `9999`. If this is set the debug port is automatically set on start up. Don't do this in production. Further you need to expose this port in your image.  
     - IIB_LICENSE: this must be set to `accept` to indicate that you accepted the IBM License Agreement
     - IIB_SKIPDEPLOY: Skip deployment of IIB applications, useful in development
     - IIB_GLOBALCACHE: if set to `internal` the global cache on IIB is just enabled. If set to `external` the connection to an external IBM Extreme Scale is configured. This requires the following environment variables to be set:
@@ -37,6 +38,12 @@ This repository includes the source code for the following RuntimeLayer images f
 			- `IIB_KEYSTOREPW`: the keystore password, can be set as an environment variable or in the `pw.sh` file mounted under `/secret/pw.sh`.
 			- `IIB_TRUSTSTOREPW`: the truststore password, can be set as an environment variable or in the `pw.sh` file mounted under `/secret/pw.sh`.
 			- Add a keystore and truststore under `/secret/keystore.jks` and `/secret/truststore.jks` to enable HTTPS or SSL MQ.
+    ODBC can be configured by: 
+      - Mounting your odbc.ini into `/var/mqsi/odbc.ini`
+      - Set Environment variable `ODBCINI`: to the path of the odbc.ini. Which must be currently `/var/mqsi/odbc.ini`.
+      - Create and copy/mount a custome configuration file that sets your security identity in: `/usr/local/bin/customconfig.sh` this file is automatically pick up by the container and executed. You
+      should include a command like: `mqsisetdbparms MYNODE -n odbc::ORACLEDB -u BASE_USER -p secretpassword`. `ORACLEDB` is the name of the resource in the odbc.ini file I have give (you can choose your own),
+      `BASE_USER_ANFW` is the username, `secretpassword` is the place to put your password.
 - Exposed Ports:
     - 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
     - 7800: Port of the HTTP Listener
