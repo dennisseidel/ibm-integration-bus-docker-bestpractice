@@ -1,14 +1,12 @@
-# The IBM Integration Bus Docker Framework - RuntimeLayer *ALPHA*
+# The IBM Integration Bus Docker - Runtime *ALPHA*
 
-This repository includes a docker image framework for IBM Integration Bus according to [container best practices](http://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/).
-
-The framework consists of two Layers:
-  - [RuntimeLayer](https://github.com/dennisseidel/iib-bestpractice-runtimes): This repository includes the different images that are prepared and form the foundation for the the AppLayer.
-  - [AppLayer](https://github.com/dennisseidel/iib-bestpractice-applications-template): This repository include a template for a developer to develop his own immutable image for his applications.
-
-This repository includes the source code for the following RuntimeLayer images from which the developer can select as the foundation for his AppLayer image:
+This repository includes docker images for IBM Integration Bus according to [container best practices](http://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/) 
+from which the developer can select as the foundation for his RuntimeLayer image ([example](https://github.com/dennisseidel/iib-bestpractice-applications-template)):
 - `iib-10.0.0.7`: Creates an Ubuntu 14.04 image with IIB in version `10.0.0.7`  
 - `iib-10.0.0.7-mqclient`: Adds MQClient 9 to the `iib-10.0.0.7` image
+
+The images allow for alot of configuration just through environment variables instead of commands inside the container. Please see the following list for the currently supported features.
+Feedback is always welcome so if you missing something open a issue. Thank you.
 
 ## Image Parameters:
 
