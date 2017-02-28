@@ -1,3 +1,5 @@
+This is no official IBM image, but based on my experiences and opinions.
+
 # The IBM Integration Bus Docker - Runtime *ALPHA*
 
 This repository includes docker images for IBM Integration Bus according to [container best practices](http://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/) 
