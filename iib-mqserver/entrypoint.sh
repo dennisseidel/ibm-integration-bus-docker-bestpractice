@@ -14,6 +14,9 @@ stop()
   echo "----------------------------------------"
   echo "Stopping node MYNODE..."
   mqsistop MYNODE
+  echo "----------------------------------------"
+  echo "Stopping QM - QM1"
+  endmqm QM1
 }
 
 start()
@@ -44,6 +47,8 @@ start()
 	fi
 
   echo "Starting node MYNODE"
+  # start QM
+  strmqm QM1
   mqsistart MYNODE
   echo "----------------------------------------"
 }
@@ -89,7 +94,8 @@ config()
     mqsicreateconfigurableservice MYNODE -c WXSServer -o xc10 -n catalogServiceEndPoints,gridName,securityIdentity -v \"$IIB_GC_CATALOGENDPOINT\",$IIB_GC_GRIDNAME,id1
     mqsichangeproperties MYNODE -o ComIbmJVMManager -e default -n jvmMaxHeapSize -v 1536870912
     echo "restart IBM Integration Bus"
-    touch /iib-restart
+    server/bin/mqsistop MYNODE
+    server/bin/mqsistart MYNODE
   fi
 
 	# add keystore config
@@ -99,31 +105,12 @@ config()
 		mqsichangeproperties MYNODE -o BrokerRegistry -n brokerTruststoreFile -v /secret/truststore.jks
 	fi
 
-  # entry hook for custome config commands in a file mounted/copy by the user into /usr/local/bin/customconfig.sh
-  if [ -x /secret/customconfig.sh ]; then
-    /secret/customconfig.sh
+
+  if [ -x /usr/local/bin/customconfig.sh ]; then
+    /usr/local/bin/customconfig.sh
   fi
 
-  # check if odbc.ini available and then setup a restart at the end of the config step
-  if [ -f /secret/odbc.ini ]; then
-    touch /iib-restart
-  fi
-
-  #check if a debug port is set in env variable IIB_DEBUGPORT if yes configure it and setup for restart
-  if [[ $IIB_DEBUGPORT == ?(-)+([0-9]) ]]; then
-     mqsichangeproperties MYNODE -e default -o ComIbmJVMManager -n jvmDebugPort -v $IIB_DEBUGPORT
-     touch /iib-restart
-  fi
-
-  # check if a restart is needed
-	if [ -f /iib-restart ]; then
-    echo "restart IBM Integration Bus"
-    mqsistop MYNODE
-    mqsistart MYNODE
-    rm -rf /iib-restart 
-  fi
-
-  # create file to indicate that container is allready configure this is used
+	# create file to indicate that container is allready configure this is used
 	# after restart to skip config if this file exists
 	touch /iib-configured
 

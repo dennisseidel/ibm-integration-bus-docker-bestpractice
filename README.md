@@ -38,8 +38,8 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
 			- Add a keystore and truststore under `/secret/keystore.jks` and `/secret/truststore.jks` to enable HTTPS or SSL MQ.
     ODBC can be configured by: 
       - Mounting your odbc.ini into `/var/mqsi/odbc.ini`
-      - Set Environment variable `ODBCINI`: to the path of the odbc.ini. Which must be currently `/var/mqsi/odbc.ini`.
-      - Create and copy/mount a custome configuration file that sets your security identity in: `/usr/local/bin/customconfig.sh` this file is automatically pick up by the container and executed. You
+      - Set Environment variable `ODBCINI`: to the path of the odbc.ini. Which must be currently `/secret/odbc.ini`.
+      - Create and copy/mount a custome configuration file that sets your security identity in: `/secret/customconfig.sh` this file is automatically pick up by the container and executed. You
       should include a command like: `mqsisetdbparms MYNODE -n odbc::ORACLEDB -u BASE_USER -p secretpassword`. `ORACLEDB` is the name of the resource in the odbc.ini file I have give (you can choose your own),
       `BASE_USER_ANFW` is the username, `secretpassword` is the place to put your password.
 - Exposed Ports:
