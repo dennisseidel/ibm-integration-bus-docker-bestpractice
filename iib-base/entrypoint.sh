@@ -60,10 +60,6 @@ config()
     IIB_OBSERVERPW="${IIB_OBSERVERPW:-observer}"
   fi
 
-	echo "Create users with role admin and observer"
-	mqsiwebuseradmin MYNODE -c -u admin -a $IIB_ADMINPW -r iibAdmins
-	mqsiwebuseradmin MYNODE -c -u observer -a $IIB_OBSERVERPW -r iibObserver
-
 	echo "Applying the iib admin inteface config"
   mqsichangefileauth MYNODE -r iibObserver -p read+
   mqsichangefileauth MYNODE -r iibAdmins -p all+
@@ -71,6 +67,10 @@ config()
 	echo "give user permission on the integration server"
 	mqsichangefileauth MYNODE -r iibObserver -p read+ -e default
 	mqsichangefileauth MYNODE -r iibAdmins -p all+ -e default
+
+	echo "Create users with role admin and observer"
+	mqsiwebuseradmin MYNODE -c -u admin -a $IIB_ADMINPW -r iibAdmins
+	mqsiwebuseradmin MYNODE -c -u observer -a $IIB_OBSERVERPW -r iibObserver
 
   echo "Check file auth"
   mqsireportfileauth MYNODE -l
