@@ -44,6 +44,7 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
       - Create and copy/mount a custome configuration file that sets your security identity in: `/secret/customconfig.sh` this file is automatically pick up by the container and executed. You
       should include a command like: `mqsisetdbparms MYNODE -n odbc::ORACLEDB -u BASE_USER -p secretpassword`. `ORACLEDB` is the name of the resource in the odbc.ini file I have give (you can choose your own),
       `BASE_USER_ANFW` is the username, `secretpassword` is the place to put your password.
+      - Set a fixed keyAlias for the ServerCertificate by setting the Env variable `IIB_SERVER_CERT_ALIAS`
 - Exposed Ports:
     - 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
     - 7800: Port of the HTTP Listener

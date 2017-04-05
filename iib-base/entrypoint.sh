@@ -60,7 +60,14 @@ config()
     IIB_OBSERVERPW="${IIB_OBSERVERPW:-observer}"
   fi
 
-	echo "Applying the iib admin inteface config"
+	if [ ! -z "$IIB_SERVER_CERT_ALIAS" ]; then
+    echo "Set the keyAlias for the iib server cert and client auth"
+    mqsichangeproperties MYNODE -b httplistener -o HTTPSConnector -n keyAlias,clientAuth -v $IIB_SERVER_CERT_ALIAS,${IIB_SSL_CLIENT_AUTH:=true}
+    mqsichangeproperties MYNODE -e default -o HTTPSConnector -n keyAlias,clientAuth -v $IIB_SERVER_CERT_ALIAS,${IIB_SSL_CLIENT_AUTH:=true}
+    touch /iib-restart
+  fi
+
+  echo "Applying the iib admin inteface config"
   mqsichangefileauth MYNODE -r iibObserver -p read+
   mqsichangefileauth MYNODE -r iibAdmins -p all+
 
@@ -101,6 +108,7 @@ config()
 
   # entry hook for custome config commands in a file mounted/copy by the user into /usr/local/bin/customconfig.sh
   if [ -x /secret/customconfig.sh ]; then
+    echo "apply custom config"
     /secret/customconfig.sh
   fi
 
