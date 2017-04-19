@@ -1,6 +1,6 @@
 This is no official IBM image, but based on my experiences and opinions.
 
-# The IBM Integration Bus Docker - Runtime *ALPHA*
+# The IBM Integration Bus Docker - Runtime
 
 This repository includes docker images for IBM Integration Bus according to [container best practices](http://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/) 
 from which the developer can select as the foundation for his RuntimeLayer image ([example](https://github.com/dennisseidel/iib-bestpractice-applications-template)):
