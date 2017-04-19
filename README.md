@@ -11,10 +11,6 @@ from which the developer can select as the foundation for his RuntimeLayer image
 The images allow for the configuration just through environment variables instead of commands inside the container. Please see the following list for the currently supported features.
 Feedback is always welcome so if you missing something open a issue. Thank you.
 
-## Image Parameters:
-
-### iib-10.0.0.7-mqclient / iib-10.0.0.7
-
 #### Default config of IIB:
   - nodename: MYNODE
   - integrationservername: default
@@ -53,7 +49,7 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
     - 7800: Port of the HTTP Listener (HTTP)
     - 7843: Port for the HTTP Listner (HTTPS) 
 
-## How to use 
+## How to use:
 
 1. Create your own Dockerfile with e.g. `FROM dennisseidel/iib-bestpractice-runtimes:${tag}` or any other tag shown above.
 
@@ -109,11 +105,10 @@ docker build -t iib-app-image .
 docker run -p 7800:7800 -p 7843:7843 -p 4414:4414 iib-app-image
 ```
 
-## How to modify the image. 
-2. Create a new folder with a new definition of a runtime layer image.
-3. Add the image to the `docker-compose` file according to the other images.
-4. Build the image with `docker-compose build` (e.g. `docker-compose build iib-mqclient`) test it locally and if ok then check into git repo.
-5. Push the image into the container repository of your choice for applicaiton developers to use.
+## How to modify the image / contribute to the repository: 
+1. Clone/Fork the repository.
+2. Modify either the Dockerfile or entrypoint.sh.
+3. Create a pull request.
 
 ## Experiences:
 - Deploying (stage specific) artefacts (bar files) at run time by getting it from a config server. Has the disadvantage that this requires multiple files for each stage. Leading to the problem that you might forget to update the artefact on all stages. IMMUTABILITY VIOLATED.
