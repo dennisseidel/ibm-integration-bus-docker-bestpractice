@@ -4,10 +4,11 @@ This is no official IBM image, but based on my experiences and opinions.
 
 This repository includes docker images for IBM Integration Bus according to [container best practices](http://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/) 
 from which the developer can select as the foundation for his RuntimeLayer image ([example](https://github.com/dennisseidel/iib-bestpractice-applications-template)):
-- `iib-10.0.0.7`: Creates an Ubuntu 14.04 image with IIB in version `10.0.0.7`  
-- `iib-10.0.0.7-mqclient`: Adds MQClient 9 to the `iib-10.0.0.7` image
+- `iib-10.0.0.8`: Creates an Ubuntu 14.04 image with IIB in version `10.0.0.8`  
+- `iib-10.0.0.8-mqclient`: Adds MQClient 9 to the `iib-10.0.0.8` image
+- `iib-10.0.0.8-mqserver`: Adds an MQServer V9 to the `iib-10.0.0.8` image => NOT YET WORKING!
 
-The images allow for alot of configuration just through environment variables instead of commands inside the container. Please see the following list for the currently supported features.
+The images allow for the configuration just through environment variables instead of commands inside the container. Please see the following list for the currently supported features.
 Feedback is always welcome so if you missing something open a issue. Thank you.
 
 ## Image Parameters:
