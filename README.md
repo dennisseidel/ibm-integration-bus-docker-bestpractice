@@ -35,6 +35,7 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
       - IIB_GC_PASSWD: password to connect to IBM Extreme Scale
       - IIB_GC_CATALOGENDPOINT: catalogendpoint to connect to IBM Extreme Scale
       - IIB_GC_GRIDNAME gridname to connect to IBM Extreme Scale
+- Set a fixed keyAlias for the ServerCertificate by setting the Env variable `IIB_SERVER_CERT_ALIAS`. This should be the alias of the server certificate e.g. iib_server_cert, you find this on in your certificate. 
 
 #### The PKI Infrastructure can be configured as follows by setting the following env variables the iib configuration will be done by the base image automatically if both variables are available and the keystore:
 - `IIB_KEYSTOREPW`: the keystore password, can be set as an environment variable or in the `pw.sh` file mounted under `/secret/pw.sh`.
@@ -45,11 +46,11 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
 - Mounting your odbc.ini into `/var/mqsi/odbc.ini`
 - Set Environment variable `ODBCINI`: to the path of the odbc.ini. Which must be currently `/secret/odbc.ini`.
 - Create and copy/mount a custome configuration file that sets your security identity in: `/secret/customconfig.sh` this file is automatically pick up by the container and executed. You should include a command like: `mqsisetdbparms MYNODE -n odbc::ORACLEDB -u BASE_USER -p secretpassword`. `ORACLEDB` is the name of the resource in the odbc.ini file I have give (you can choose your own), `BASE_USER_ANFW` is the username, `secretpassword` is the place to put your password.
-- Set a fixed keyAlias for the ServerCertificate by setting the Env variable `IIB_SERVER_CERT_ALIAS`
 
 #### Exposed Ports:
     - 4414: Port of the IIB Admin WebUi and for remote debugging in IBM Integration Bus Toolkit
-    - 7800: Port of the HTTP Listener
+    - 7800: Port of the HTTP Listener (HTTP)
+    - 7843: Port for the HTTP Listner (HTTPS) 
 
 ## Usage Process
 If you have the need for a new image or want to modify one of the existing runtime images:
