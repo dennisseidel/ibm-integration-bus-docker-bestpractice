@@ -53,10 +53,63 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
     - 7800: Port of the HTTP Listener (HTTP)
     - 7843: Port for the HTTP Listner (HTTPS) 
 
-## Usage Process
-If you have the need for a new image or want to modify one of the existing runtime images:
+## How to use 
 
-1. Update or add a Version Number in the `env` file and run it `. ./env`
+1. Create your own Dockerfile with e.g. `FROM dennisseidel/iib-bestpractice-runtimes:${tag}` or any other tag shown above.
+
+```
+FROM dennisseidel/iib-bestpractice-runtimes:10.0.0.7-mqclient
+
+MAINTAINER YourName your@mail.com
+```
+
+2. Define in the Dockerfile the artefacts you want to copy into the image, if you want to change them at runtime you can just mount other files over them: 
+
+```
+# MANDATORY: BAR Files
+# Copy all application bar files into the docker container to /iibProjects/
+# from where they are deployed at runtime
+COPY workspace/BARfiles/app.bar /iibProjects/
+
+# OPTIONALLY: Overwrite Files
+# Copy all properties/overwrite files to /iibProperties/. They are applied to
+# the bar file with the same name (app.properties applied to app.bar)
+# These files can be "overwritten" by putting the properties file into a mountpoint
+# or a configmap (kubernetes/openshift specific)
+COPY config/app.properties /iibProperties/
+
+# OPTIONALLY: Custom Config Hook
+# Add a file called customconfig.sh with mqsi commands ran at runtime before the
+# bar file is deployed.
+# This file can be also be stage specific mounted into the image.
+#COPY config/customconfig.sh /usr/local/bin/customconfig.sh
+
+# MANDATORY: Secrets (Passwords / keystore / truststore
+# Password need to be mounted into the location /secret as a pw.sh (see example)
+# this allow you to set export environment variables for on run when the container start
+# those passwords are not visable afterwards.
+# The keystore needs to be mounted into /secret as keystore.jks
+# The trust store needs to be mounted into /secret as truststore.jks
+COPY config/secret/ /secret/
+
+# OPTIONALLY: ODBC.ini for ODBC support in ESQL
+# this file can on other stages be comming from a secret or a config map depending on the
+# information that comes from this file.
+# COPY config/odbc.ini /secret
+
+# OPTIONAL: copy files that can be served by a mock service and read with a file input node
+COPY workspace/mocks/ /mock/data
+```
+3. Either create docker-compose.yaml file or build and start the docker container based on your created Dockerfile. [see Docker Documentation](https://docs.docker.com/get-started/part2/#build-the-app). 
+
+```
+# build the runtime image
+docker build -t iib-app-image .
+# start the runtime image
+docker run -p 7800:7800 -p 7843:7843 -p 4414:4414 iib-app-image
+```
+
+## How to modify the image. 
 2. Create a new folder with a new definition of a runtime layer image.
 3. Add the image to the `docker-compose` file according to the other images.
 4. Build the image with `docker-compose build` (e.g. `docker-compose build iib-mqclient`) test it locally and if ok then check into git repo.
