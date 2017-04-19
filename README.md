@@ -35,7 +35,7 @@ Feedback is always welcome so if you missing something open a issue. Thank you.
       - IIB_GC_PASSWD: password to connect to IBM Extreme Scale
       - IIB_GC_CATALOGENDPOINT: catalogendpoint to connect to IBM Extreme Scale
       - IIB_GC_GRIDNAME gridname to connect to IBM Extreme Scale
-- Set a fixed keyAlias for the ServerCertificate by setting the Env variable `IIB_SERVER_CERT_ALIAS`. This should be the alias of the server certificate e.g. iib_server_cert, you find this on in your certificate. 
+- Set a fixed keyAlias for the ServerCertificate by setting the Env variable `IIB_SERVER_CERT_ALIAS`. This should be the alias of the server certificate e.g. iib_server_cert, find this on in your certificate. 
 
 #### The PKI Infrastructure can be configured as follows by setting the following env variables the iib configuration will be done by the base image automatically if both variables are available and the keystore:
 - `IIB_KEYSTOREPW`: the keystore password, can be set as an environment variable or in the `pw.sh` file mounted under `/secret/pw.sh`.
