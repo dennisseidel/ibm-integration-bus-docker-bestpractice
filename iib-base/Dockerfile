@@ -14,7 +14,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Dennis Seidel mail@dennisseidel.de
 
-ENV IIB_VERSION="10.0.0.7"
+ENV IIB_VERSION="10.0.0.8"
 
 # Configure system
 RUN echo "IIB_${IIB_VERSION}:" > /etc/debian_chroot  && \
@@ -69,6 +69,6 @@ ENV BASH_ENV=/usr/local/bin/iib_env.sh
 RUN mkdir /iibProperties/
 
 # Expose default admin port and http port
-EXPOSE 4414 7800
+EXPOSE 4414 7800 7843
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
