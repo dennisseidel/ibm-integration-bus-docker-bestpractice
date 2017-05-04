@@ -57,6 +57,7 @@ RUN set -ex \
 COPY iib-license-check.sh /usr/local/bin/
 COPY iib_env.sh /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
+RUN chmod 777 /usr/local/bin/entrypoint.sh
 
 # Copy libs
 RUN mkdir /customlibs/

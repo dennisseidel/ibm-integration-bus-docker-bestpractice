@@ -107,9 +107,9 @@ config()
 	fi
 
   # entry hook for custome config commands in a file mounted/copy by the user into /usr/local/bin/customconfig.sh
-  if [ -x /secret/customconfig.sh ]; then
+  if [ -f /secret/customconfig.sh ]; then
     echo "apply custom config"
-    /secret/customconfig.sh
+    source /secret/customconfig.sh 
   fi
 
   # check if odbc.ini available and then setup a restart at the end of the config step
